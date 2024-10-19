@@ -20,7 +20,8 @@ if __name__ == '__main__':
     # Open the Markdown file and the output HTML file
     with open(sys.argv[1], 'r') as md_file, open(sys.argv[2], 'w') as html_file:
         unordered_start = False  # Keep track of unordered list state
-        
+        ordered_start = False     # Keep track of ordered list state
+
         for line in md_file:
             # Remove any leading/trailing whitespace
             line = line.strip()
@@ -33,27 +34,43 @@ if __name__ == '__main__':
             unordered = line.lstrip('-')
             unordered_num = length - len(unordered)
 
+            ordered = line.lstrip('*')
+            ordered_num = length - len(ordered)
+
             # If the line starts with 1-6 '#' characters, it's a heading
             if 1 <= heading_num <= 6:
                 line = '<h{}>'.format(heading_num) + headings.strip() + '</h{}>\n'.format(heading_num)
+            else:
+                # Parse unordered list items
+                if unordered_num:
+                    if not unordered_start:
+                        html_file.write('<ul>\n')
+                        unordered_start = True
+                    line = '<li>' + unordered.strip() + '</li>\n'
+                else:
+                    if unordered_start:
+                        html_file.write('</ul>\n')
+                        unordered_start = False
 
-            # Parse unordered list items
-            if unordered_num:
-                if not unordered_start:
-                    html_file.write('<ul>\n')
-                    unordered_start = True
-                line = '<li>' + unordered.strip() + '</li>\n'
-
-            if unordered_start and not unordered_num:
-                html_file.write('</ul>\n')
-                unordered_start = False
+                # Parse ordered list items
+                if ordered_num:
+                    if not ordered_start:
+                        html_file.write('<ol>\n')
+                        ordered_start = True
+                    line = '<li>' + ordered.strip() + '</li>\n'
+                else:
+                    if ordered_start:
+                        html_file.write('</ol>\n')
+                        ordered_start = False
 
             # Write the converted line to the HTML file
             html_file.write(line)
 
-        # Close any open unordered list at the end of the file
+        # Close any open unordered or ordered list at the end of the file
         if unordered_start:
             html_file.write('</ul>\n')
+        if ordered_start:
+            html_file.write('</ol>\n')
 
     # If no issues, exit successfully
     exit(0)
