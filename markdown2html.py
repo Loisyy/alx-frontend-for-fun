@@ -17,5 +17,23 @@ if __name__ == '__main__':
         print('Missing {}'.format(sys.argv[1]), file=sys.stderr)
         exit(1)
 
+    # Open the Markdown file and the output HTML file
+    with open(sys.argv[1], 'r') as md_file, open(sys.argv[2], 'w') as html_file:
+        for line in md_file:
+            # Remove any leading/trailing whitespace
+            line = line.strip()
+
+            # Parse headings
+            length = len(line)
+            headings = line.lstrip('#')
+            heading_num = length - len(headings)
+
+            # If the line starts with 1-6 '#' characters, it's a heading
+            if 1 <= heading_num <= 6:
+                line = '<h{}>'.format(heading_num) + headings.strip() + '</h{}>\n'.format(heading_num)
+
+            # Write the converted line to the HTML file
+            html_file.write(line)
+
     # If no issues, exit successfully
     exit(0)
