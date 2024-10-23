@@ -531,27 +531,26 @@ ul.row {
 /* Section HERO
       ============================= */
 
-.section-hero .section-body{
+.section-hero {
     position: relative;
     margin-top: -8.5rem;
 }
 
-.hero-homepage{
+.hero-homepage {
     background-position: 75% 0;
     background-repeat: no-repeat;
     background-size: 90rem auto;
     background-color: #010101;
-
 }
-.section-hero .section-body{
+
+.section-hero .section-body {
     padding: 10rem 4rem;
 }
 
-.section-hero .section-category{
-   color: var(--color-white);
-   text-transform: uppercase;
+.section-hero .section-category {
+    color: var(--color-white);
+    text-transform: uppercase;
 }
-
 
 .section-hero .section-title {
     margin-bottom: 5rem;
@@ -579,14 +578,11 @@ ul.row {
     flex-wrap: wrap;
 }
 
-/* Section ABOUT US 
-              ============================= */
-
-.section-about-us .col- {
+/* Section ABOUT US
+      ============================= */
+.section-about-us [class*='col-'] {
     align-self: center;
-
 }
-
 
 /*** 4. CARD ***/
 
